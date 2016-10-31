@@ -49,8 +49,14 @@ ip route add blackhole 192.168.0.0/16 table 114
 #Blackhole Ninux aggregate
 ip route add blackhole 176.62.53.0/24 table 114
 
-while true; do
-    /config/olsrd/olsrd.mips64r2 -f /config/olsrd/olsrd.conf -d 0 -nofork
-    sleep 60
+# http://stackoverflow.com/questions/696839/how-do-i-write-a-bash-script-to-restart-a-process-if-it-dies
+until olsrd; do
+    echo "olsrd crashed with exit code $?.  Respawning.." >&2
+    sleep 1
 done
+# old script
+#while true; do
+#    /config/olsrd/olsrd.mips64r2 -f /config/olsrd/olsrd.conf -d 0 -nofork
+#    sleep 60
+#done
 
